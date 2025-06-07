@@ -18,7 +18,6 @@ class JumbleSession(val words: List<String>) : Session<Jumble> {
                 startNewRound()
             }
         }
-
     }
 
     fun startNewRound() {
