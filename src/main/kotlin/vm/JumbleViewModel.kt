@@ -6,13 +6,13 @@ import androidx.compose.runtime.setValue
 import logger
 import model.jumble.Jumble
 import model.jumble.JumbleEvent
+import model.jumble.JumbleRound
 import model.jumble.JumbleSession
 
 class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumble, JumbleEvent, JumbleSession> {
-    override val sessionUIState: JumbleSessionUIState
-        get() = TODO("Not yet implemented")
+    override var sessionUIState: JumbleSessionUIState by mutableStateOf(snapSUIState())
     override var roundUIState: JumbleRoundUIState by mutableStateOf(
-        (session.currentRound?.snapRUIState() ?: JumbleRoundUIState.EMPTY)
+        session.currentRound?.snapRUIState() ?: JumbleRoundUIState.EMPTY
     )
 
     init {
@@ -31,6 +31,7 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
                 session.currentRound?.let {
                     roundUIState = it.snapRUIState()
                 }
+                sessionUIState = snapSUIState()
             }
 
             JumbleEvent.Shuffle -> {
@@ -59,10 +60,16 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
             }
         }
     }
+
+    fun snapSUIState(): JumbleSessionUIState {
+        return JumbleSessionUIState(rounds = session.rounds.map(JumbleRound::snapRUIState))
+    }
+
+
 }
 
+data class JumbleSessionUIState(val rounds: List<JumbleRoundUIState>) : SessionUIState<Jumble>
 
-data class JumbleSessionUIState(val name: String) : SessionUIState<Jumble>
 data class JumbleRoundUIState(
     val jumbledWord: String,
     val correctWord: String,

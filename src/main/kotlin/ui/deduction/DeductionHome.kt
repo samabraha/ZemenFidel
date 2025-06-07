@@ -1,10 +1,9 @@
-package ui
+package ui.deduction
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ui.util.ItemizedWord
 import vm.DeductionViewModel
 
 @Composable

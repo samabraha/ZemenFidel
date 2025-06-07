@@ -1,4 +1,4 @@
-package ui
+package ui.spelling_sprint
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

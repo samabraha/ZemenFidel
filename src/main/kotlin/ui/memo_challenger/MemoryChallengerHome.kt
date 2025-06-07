@@ -1,4 +1,4 @@
-package ui
+package ui.memo_challenger
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

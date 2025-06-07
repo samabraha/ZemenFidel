@@ -9,7 +9,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.*
 import ui.*
+import ui.deduction.DeductionHomeUI
+import ui.hangman.HangmanHomeUI
 import ui.jumble.JumbleHomeUI
+import ui.memo_challenger.MemoryChallengerHomeUI
+import ui.spelling_sprint.SpellingSprintHomeUI
+import ui.word_train.WordTrainHomeUI
 import vm.*
 import java.util.logging.Logger
 

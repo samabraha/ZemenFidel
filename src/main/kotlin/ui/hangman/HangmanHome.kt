@@ -1,4 +1,4 @@
-package ui
+package ui.hangman
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
