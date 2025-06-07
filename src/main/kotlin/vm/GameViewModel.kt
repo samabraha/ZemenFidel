@@ -3,7 +3,6 @@ package vm
 import model.GameEvent
 import model.GameType
 import model.Session
-import java.security.Provider
 
 interface GameViewModel<G : GameType, E : GameEvent<G>, S : Session<G>> {
     var session: S

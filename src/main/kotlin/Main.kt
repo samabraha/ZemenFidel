@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.*
 import ui.*
+import ui.jumble.JumbleHomeUI
 import vm.*
 import java.util.logging.Logger
 

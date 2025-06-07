@@ -16,7 +16,6 @@ fun DeductionHomeUI(
 
         Text(text = "Deduction Home UI is not implemented yet", modifier = modifier)
 
-        ItemizedWord(word = "TEST WORD", clickedLetter = {})
     }
 
 }
