@@ -4,9 +4,14 @@ import model.Round
 import vm.JumbleRoundUIState
 
 class JumbleRound(val word: String) : Round<Jumble> {
-    var jumbledWord: String = word.toList().shuffled().joinToString("")
+    var jumbledWord: String
     private var guess: String = ""
     private var attempts: Int = 0
+
+
+    init {
+        jumbledWord = jumbleWord()
+    }
 
     fun guess(guess: String): Boolean {
         attempts++
@@ -27,4 +32,12 @@ class JumbleRound(val word: String) : Round<Jumble> {
         guess = guess,
         attempts = attempts,
     )
+
+    fun jumbleWord(): String {
+        var jumble = word.toList().shuffled().joinToString("")
+        while (jumble == word) {
+            jumble = word.toList().shuffled().joinToString("")
+        }
+        return jumble
+    }
 }

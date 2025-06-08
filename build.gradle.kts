@@ -17,19 +17,26 @@ repositories {
 }
 
 dependencies {
-
-    val composeBom = platform("androidx.compose:compose-bom:2025.05.00")
+    val composeBom = platform("androidx.compose:compose-bom:2025.06.00")
     implementation(composeBom)
 
-    // Note, if you develop a library, you should use compose.desktop.common.
-    // compose.desktop.currentOs should be used in launcher-sourceSet
-    // (in a separate module for demo project and in testMain).
-    // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    implementation("org.xerial:sqlite-jdbc:3.49.1.0")
+    val jsonSerializationV = "1.8.0"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonSerializationV")
+
+    val kCoroutinesVersion = "1.7.3"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kCoroutinesVersion")
+
+    val sqliteVersion = "3.49.1.0"
+    implementation("org.xerial:sqlite-jdbc:$sqliteVersion")
+
+    testImplementation(composeBom)
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(kotlin("test"))
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 compose.desktop {
@@ -43,3 +50,11 @@ compose.desktop {
         }
     }
 }
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
