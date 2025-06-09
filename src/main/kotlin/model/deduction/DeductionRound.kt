@@ -6,7 +6,11 @@ import vm.DeductionRoundUIState
 
 class DeductionRound(val word: String) : Round<Deduction> {
     override var gameStatus: GameStatus = GameStatus.Playing
-    var score: DeductionWordScore = DeductionWordScore.DEFAULT
+    var score: DeductionWordScore = DeductionWordScore(
+        word = word,
+        guess = "",
+        status = emptyList()
+    )
     var attempts = 0
 
     init {
@@ -33,7 +37,7 @@ class DeductionRound(val word: String) : Round<Deduction> {
         val incorrect: Int = 0,
         val status: List<MatchStatus>
     ) {
-        fun snapRUIState() = DeductionRoundUIState(
+        fun snapRUIState(roundUIState: DeductionRoundUIState) = roundUIState.copy(
             word = word,
             guess = guess,
             correct = correct,

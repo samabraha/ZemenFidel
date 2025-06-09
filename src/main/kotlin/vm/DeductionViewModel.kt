@@ -19,14 +19,18 @@ class DeductionViewModel(override var session: DeductionSession) :
         when (event) {
             DeductionEvent.Start -> {
                 session.startNewRound()
+
                 sessionUIState = sessionUIState.copy(status = GameStatus.Playing)
             }
 
             is DeductionEvent.Guess -> session.guess(event.guess)
         }
         session.currentRound?.let {
-            roundUIState = it.score?.snapRUIState() ?: DeductionRoundUIState.DEFAULT
+            roundUIState = it.score.snapRUIState(roundUIState).copy(
+                attempts = it.attempts,
+            )
         }
+        println( "Updated DeductionViewModel: roundUIState=$roundUIState")
     }
 }
 

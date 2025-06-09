@@ -1,6 +1,8 @@
 package ui.deduction
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,21 +21,22 @@ fun DeductionHomeUI(
 ) {
     val roundUIState = deductionViewModel.roundUIState
     val sessionUIState = deductionViewModel.sessionUIState
-    if (sessionUIState.status == GameStatus.NotStarted) {
-        NoGamePane(
-            sessionUIState = sessionUIState,
-            deductionAction = deductionViewModel::handleEvent,
-            modifier = modifier,
-            navigate = navigate
-        )
-    }
-
     Column(modifier = modifier) {
-        DeductionPane(
-            deductionState = roundUIState,
-            takeAction = deductionViewModel::handleEvent,
-        )
 
+        if (sessionUIState.status == GameStatus.NotStarted) {
+            NoGamePane(
+                sessionUIState = sessionUIState,
+                deductionAction = deductionViewModel::handleEvent,
+                modifier = modifier,
+                navigate = navigate
+            )
+        } else {
+            DeductionPane(
+                deductionState = roundUIState,
+                takeAction = deductionViewModel::handleEvent,
+            )
+
+        }
         OutlinedButton(onClick = { navigate(Screen.Home) }) {
             Text(text = "Quit")
         }
@@ -47,16 +50,14 @@ fun NoGamePane(
     modifier: Modifier = Modifier,
     navigate: (Screen) -> Unit
 ) {
-    if (sessionUIState.status == GameStatus.NotStarted) {
-        Column {
-            Text(text = "Welcome to Deduction Game!")
-            Text(text = "Press 'Start Deduction' to begin.")
+    Column {
+        Text(text = "Welcome to Deduction Game!")
+        Text(text = "Press 'Start Deduction' to begin.")
 
-            OutlinedButton(
-                onClick = { deductionAction(DeductionEvent.Start) },
-            ) {
-                Text(text = "Start Deduction")
-            }
+        OutlinedButton(
+            onClick = { deductionAction(DeductionEvent.Start) },
+        ) {
+            Text(text = "Start Deduction")
         }
     }
 }
@@ -65,17 +66,19 @@ fun NoGamePane(
 fun DeductionPane(
     deductionState: DeductionRoundUIState, takeAction: (DeductionEvent) -> Unit, modifier: Modifier = Modifier
 ) {
-    println("DeductionPane called with state: $deductionState")
-
+    val style = MaterialTheme.typography.bodyLarge
     Column(modifier = modifier) {
-        Text(text = "Word: ${deductionState.word}")
-        Text(
-            text = "Correct: ${deductionState.correct}, " + "Misplaced: ${deductionState.misplaced}, " + "Incorrect: ${deductionState.incorrect}"
+        DeductionScore(
+            deductionState = deductionState,
         )
 
         var guess by remember { mutableStateOf("") }
 
-        TextField(value = guess, onValueChange = { guess = it }, label = { Text("Your Guess") })
+        TextField(singleLine = true, value = guess, onValueChange = {
+            if (it.length <= deductionState.word.length) {
+                guess = it
+            }
+        })
 
         if (guess.length == deductionState.word.length) {
             OutlinedButton(onClick = {
@@ -84,6 +87,22 @@ fun DeductionPane(
             }) {
                 Text(text = "Submit Guess")
             }
+        }
+    }
+}
+
+@Composable
+fun DeductionScore(
+    deductionState: DeductionRoundUIState, modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(text = "Guess: ${deductionState.guess}")
+        Text(text = "Att: ${deductionState.attempts}")
+        Text(text = "Len: ${deductionState.word.length}")
+        Row {
+            Text(text = "Cor: ${deductionState.correct}")
+            Text(text = "Mis: ${deductionState.misplaced}")
+            Text(text = "Inc: ${deductionState.incorrect}")
         }
     }
 }
