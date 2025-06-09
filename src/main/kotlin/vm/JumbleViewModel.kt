@@ -64,8 +64,6 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
     fun snapSUIState(): JumbleSessionUIState {
         return JumbleSessionUIState(rounds = session.rounds.map(JumbleRound::snapRUIState))
     }
-
-
 }
 
 data class JumbleSessionUIState(val rounds: List<JumbleRoundUIState>) : SessionUIState<Jumble>

@@ -21,9 +21,10 @@ import ui.util.ItemizedWord
 import vm.JumbleRoundUIState
 import vm.JumbleSessionUIState
 import vm.JumbleViewModel
+import vm.Screen
 
 @Composable
-fun JumbleHomeUI(jumbleViewModel: JumbleViewModel, modifier: Modifier = Modifier) {
+fun JumbleHomeUI(jumbleViewModel: JumbleViewModel, modifier: Modifier = Modifier, navigate: (Screen) -> Unit) {
     val sessionState = jumbleViewModel.sessionUIState
     val jumbleState = jumbleViewModel.roundUIState
     val takeAction: (JumbleEvent) -> Unit = { event ->

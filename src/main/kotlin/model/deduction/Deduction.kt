@@ -6,5 +6,6 @@ import model.GameType
 interface Deduction : GameType
 
 sealed class DeductionEvent : GameEvent<Deduction> {
+    data object Start : DeductionEvent()
     data class Guess(val guess: String) : DeductionEvent()
 }

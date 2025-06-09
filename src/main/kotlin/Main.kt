@@ -1,49 +1,81 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.*
-import ui.*
+import ui.HomeUI
 import ui.deduction.DeductionHomeUI
 import ui.hangman.HangmanHomeUI
 import ui.jumble.JumbleHomeUI
 import ui.memo_challenger.MemoryChallengerHomeUI
 import ui.spelling_sprint.SpellingSprintHomeUI
 import ui.word_train.WordTrainHomeUI
-import vm.*
+import vm.HomeViewModel
+import vm.Screen
 import java.util.logging.Logger
 
 
 val logger: Logger = Logger.getLogger("com.develogica.zemen_fidel")
 
+fun main() = application {
+    val windowState = rememberWindowState(
+        placement = WindowPlacement.Floating, position = WindowPosition(alignment = Alignment.Center)
+    )
+
+    Window(
+        state = windowState, onCloseRequest = ::exitApplication
+    ) {
+        App(homeViewModel = AppManager.homeViewModel)
+    }
+}
+
 @Composable
-@Preview
-fun App() {
-    val homeViewModel = remember { HomeViewModel() }
-
-    val screen = homeViewModel.currentScreen
-
+fun App(homeViewModel: HomeViewModel) {
+    var screen by remember { mutableStateOf(homeViewModel.currentScreen) }
+    val navigate: (Screen) -> Unit = { nextScreen ->
+        println("Navigating to $nextScreen")
+        screen = nextScreen
+    }
 
     MaterialTheme {
         Surface {
             Column {
                 when (screen) {
-                    Screen.Home -> HomeUI(homeViewModel)
-                    Screen.Hangman -> HangmanHomeUI(homeViewModel.hangmanVMProvider())
-                    Screen.Jumble -> JumbleHomeUI(homeViewModel.jumbleVMProvider())
-                    Screen.SpellingSprint -> SpellingSprintHomeUI(homeViewModel.spellingSprintVMProvider())
-                    Screen.MemoryChallenger -> MemoryChallengerHomeUI(homeViewModel.memoryChallengerVMProvider())
-                    Screen.Deduction -> DeductionHomeUI(homeViewModel.deductionVMProvider())
-                    Screen.WordTrain -> WordTrainHomeUI(homeViewModel.wordTrainVMProvider())
+
+                    Screen.Home ->
+                        HomeUI(homeViewModel, navigate = navigate, modifier = Modifier)
+
+                    Screen.Hangman ->
+                        HangmanHomeUI(homeViewModel.hangmanVMProvider(), navigate = navigate)
+
+                    Screen.Jumble ->
+                        JumbleHomeUI(homeViewModel.jumbleVMProvider(), navigate = navigate)
+
+                    Screen.SpellingSprint ->
+                        SpellingSprintHomeUI(homeViewModel.spellingSprintVMProvider(), navigate = navigate)
+
+                    Screen.MemoryChallenger ->
+                        MemoryChallengerHomeUI(homeViewModel.memoryChallengerVMProvider(), navigate = navigate)
+
+                    Screen.Deduction ->
+                        DeductionHomeUI(homeViewModel.deductionVMProvider(), navigate = navigate)
+
+                    Screen.WordTrain ->
+                        WordTrainHomeUI(homeViewModel.wordTrainVMProvider(), navigate = navigate)
+
                 }
 
                 OutlinedButton(onClick = {
                     homeViewModel.currentScreen = Screen.Home
+                    screen = Screen.Home
                 }) {
                     Text(text = "Back to Home")
                 }
@@ -52,17 +84,3 @@ fun App() {
     }
 }
 
-
-fun main() = application {
-    val windowState = rememberWindowState(
-        placement = WindowPlacement.Floating,
-        position = WindowPosition(alignment = Alignment.Center)
-    )
-
-    Window(
-        state = windowState,
-        onCloseRequest = ::exitApplication
-    ) {
-        App()
-    }
-}

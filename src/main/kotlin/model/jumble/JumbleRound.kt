@@ -1,9 +1,11 @@
 package model.jumble
 
+import model.GameStatus
 import model.Round
 import vm.JumbleRoundUIState
 
 class JumbleRound(val word: String) : Round<Jumble> {
+    override var gameStatus: GameStatus = GameStatus.Playing
     var jumbledWord: String
     private var guess: String = ""
     private var attempts: Int = 0
@@ -40,4 +42,5 @@ class JumbleRound(val word: String) : Round<Jumble> {
         }
         return jumble
     }
+
 }

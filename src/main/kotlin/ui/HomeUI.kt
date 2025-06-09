@@ -9,10 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import vm.HomeViewModel
+import vm.Screen
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HomeUI(homeViewModel: HomeViewModel, modifier: Modifier = Modifier) {
+fun HomeUI(homeViewModel: HomeViewModel, navigate: (Screen) -> Unit, modifier: Modifier = Modifier) {
     FlowRow(
         verticalArrangement = Arrangement.Center,
         horizontalArrangement = Arrangement.Center,
@@ -21,6 +22,7 @@ fun HomeUI(homeViewModel: HomeViewModel, modifier: Modifier = Modifier) {
         homeViewModel.gameInfoList.forEach {
             FilledTonalButton(onClick = {
                 homeViewModel.startGame(it.screen)
+                navigate(it.screen)
             }) { Text(text = it.name) }
         }
     }

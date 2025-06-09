@@ -1,8 +1,5 @@
 package vm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import data.WordsRepository
 import model.deduction.Deduction
 import model.deduction.DeductionSession
@@ -19,10 +16,14 @@ import model.word_train.WordTrainSession
 
 class HomeViewModel(wordsRepository: WordsRepository = WordsRepository()) {
     val words = wordsRepository.words
-    var currentScreen by mutableStateOf(Screen.Home)
+    var currentScreen = Screen.Home
 
-    val hangmanVMProvider: () -> HangmanViewModel = { HangmanViewModel(HangmanSession(words)) }
-    val jumbleVMProvider: () -> JumbleViewModel = { JumbleViewModel(JumbleSession(words)) }
+    val hangmanVMProvider: () -> HangmanViewModel = {
+        HangmanViewModel(HangmanSession(words))
+    }
+    val jumbleVMProvider: () -> JumbleViewModel = {
+        JumbleViewModel(JumbleSession(words))
+    }
     val spellingSprintVMProvider: () -> SpellingSprintViewModel =
         { SpellingSprintViewModel(SpellingSprintSession(words)) }
     val memoryChallengerVMProvider: () -> MemoryChallengerViewModel =
@@ -39,7 +40,12 @@ class HomeViewModel(wordsRepository: WordsRepository = WordsRepository()) {
         GameInfo<WordTrain>(name = "Word Train", screen = Screen.WordTrain),
     )
 
-    fun  startGame(screen: Screen): GameViewModel<*, *, *> {
+    init {
+        println("HomeViewModel initialized with words: ${words.size} words loaded")
+    }
+
+    fun startGame(screen: Screen): GameViewModel<*, *, *> {
+        println("Starting game for screen: $screen")
         currentScreen = screen
         return when (screen) {
             Screen.Hangman -> hangmanVMProvider()

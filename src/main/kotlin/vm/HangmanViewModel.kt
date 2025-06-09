@@ -1,6 +1,6 @@
 package vm
 
-import model.GameEvent
+import logger
 import model.hangman.Hangman
 import model.hangman.HangmanEvent
 import model.hangman.HangmanSession
@@ -13,9 +13,13 @@ class HangmanViewModel(override var session: HangmanSession) : GameViewModel<Han
 
     override fun handleEvent(event: HangmanEvent) {
         when (event) {
-            is HangmanEvent.Guess -> TODO(  )
+            is HangmanEvent.Guess -> TODO()
             HangmanEvent.Start -> TODO()
         }
+    }
+
+    init {
+        logger.info("HangmanViewModel initialized with session: $session")
     }
 }
 
