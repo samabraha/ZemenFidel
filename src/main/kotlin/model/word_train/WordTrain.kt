@@ -6,4 +6,6 @@ import model.GameType
 interface WordTrain : GameType
 
 sealed class WordTrainEvent : GameEvent<WordTrain> {
+    data object Start : WordTrainEvent()
+    data class Guess(val letter: Char) : WordTrainEvent()
 }

@@ -2,12 +2,13 @@ package model
 
 interface GameType
 
-interface Round<G : GameType> {
-    var gameStatus: GameStatus
+open class Round<G : GameType> {
+    open var gameStatus: GameStatus = GameStatus.NotStarted
 }
 
-interface Session<G : GameType> {
-    var round: Round<in G>?
+open class Session<G : GameType> {
+    open var round: Round<in G>? = null
+    val gameStatus: GameStatus get() = round?.gameStatus ?: GameStatus.NotStarted
 }
 
 interface GameEvent<G : GameType>

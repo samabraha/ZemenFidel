@@ -1,5 +1,6 @@
 package vm
 
+import model.GameStatus
 import model.word_train.WordTrain
 import model.word_train.WordTrainEvent
 import model.word_train.WordTrainSession
@@ -16,5 +17,8 @@ class WordTrainViewModel(override var session: WordTrainSession) : GameViewModel
     }
 }
 
-data class WordTrainSessionUIState(val name: String) : SessionUIState<WordTrain>
+data class WordTrainSessionUIState(
+    val status: GameStatus = GameStatus.NotStarted,
+    val rounds: List<WordTrainRoundUIState> = emptyList(),
+) : SessionUIState<WordTrain>
 data class WordTrainRoundUIState(val name: String) : RoundUIState<WordTrain>

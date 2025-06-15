@@ -11,9 +11,7 @@ import model.jumble.JumbleSession
 
 class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumble, JumbleEvent, JumbleSession> {
     override var sessionUIState: JumbleSessionUIState by mutableStateOf(snapSUIState())
-    override var roundUIState: JumbleRoundUIState by mutableStateOf(
-        session.currentRound?.snapRUIState() ?: JumbleRoundUIState.EMPTY
-    )
+    override var roundUIState: JumbleRoundUIState by mutableStateOf(JumbleRoundUIState.EMPTY)
 
     init {
         logger.info("JumbleViewModel initialized with session: $session")
@@ -35,8 +33,12 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
             }
 
             JumbleEvent.Shuffle -> {
-                roundUIState =
-                    roundUIState.copy(jumbledWord = roundUIState.jumbledWord.toList().shuffled().joinToString(""))
+                roundUIState = roundUIState.copy(
+                    jumbledWord = roundUIState.jumbledWord
+                        .toList()
+                        .shuffled()
+                        .joinToString("")
+                )
             }
 
             is JumbleEvent.MoveLetter -> {

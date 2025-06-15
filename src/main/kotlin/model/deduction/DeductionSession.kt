@@ -4,7 +4,7 @@ import model.GameStatus
 import model.Round
 import model.Session
 
-class DeductionSession(val words: List<String>) : Session<Deduction> {
+class DeductionSession(val words: List<String>) : Session<Deduction>() {
     override var round: Round<in Deduction>? = null
     val currentRound get() = round as? DeductionRound
     val status get() = currentRound?.gameStatus ?: GameStatus.NotStarted

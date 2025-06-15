@@ -4,7 +4,7 @@ import logger
 import model.Round
 import model.Session
 
-class JumbleSession(val words: List<String>) : Session<Jumble> {
+class JumbleSession(val words: List<String>) : Session<Jumble>() {
     val rounds = mutableListOf<JumbleRound>()
 
     override var round: Round<in Jumble>? = null

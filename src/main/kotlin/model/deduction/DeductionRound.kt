@@ -4,7 +4,7 @@ import model.GameStatus
 import model.Round
 import vm.DeductionRoundUIState
 
-class DeductionRound(val word: String) : Round<Deduction> {
+class DeductionRound(val word: String) : Round<Deduction>() {
     override var gameStatus: GameStatus = GameStatus.Playing
     var score: DeductionWordScore = DeductionWordScore(
         word = word,

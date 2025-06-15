@@ -11,4 +11,12 @@ fun MemoryChallengerHomeUI(
     modifier: Modifier = Modifier,
     navigate: (Screen) -> Unit
 ) {
+
+    val sessionUIState = memoryChallengerViewModel.sessionUIState
+    val roundUIState = memoryChallengerViewModel.roundUIState
+
+    navigate(Screen.Home)
+
+
+
 }

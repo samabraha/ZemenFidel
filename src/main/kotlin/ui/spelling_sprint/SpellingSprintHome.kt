@@ -11,4 +11,8 @@ fun SpellingSprintHomeUI(
     modifier: Modifier = Modifier,
     navigate: (Screen) -> Unit
 ) {
+    val sessionUIState = sprintViewModel.sessionUIState
+    val roundUIState = sprintViewModel.roundUIState
+
+    val navigateHome = { navigate(Screen.Home) }
 }
