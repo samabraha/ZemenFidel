@@ -44,7 +44,7 @@ class HomeViewModel(wordsRepository: WordsRepository = WordsRepository()) {
         println("HomeViewModel initialized with words: ${words.size} words loaded")
     }
 
-    fun startGame(screen: Screen): GameViewModel<*, *, *> {
+    fun startGame(screen: Screen): GameViewModel<*, *, *, *> {
         println("Starting game for screen: $screen")
         currentScreen = screen
         return when (screen) {

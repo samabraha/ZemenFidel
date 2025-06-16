@@ -6,11 +6,12 @@ import androidx.compose.runtime.setValue
 import model.GameStatus
 import model.deduction.Deduction
 import model.deduction.DeductionEvent
+import model.deduction.DeductionRound
 import model.deduction.DeductionSession
 
 
 class DeductionViewModel(override var session: DeductionSession) :
-    GameViewModel<Deduction, DeductionEvent, DeductionSession> {
+    GameViewModel<Deduction, DeductionEvent, DeductionRound, DeductionSession> {
     override var sessionUIState: DeductionSessionUIState by mutableStateOf(DeductionSessionUIState())
     override var roundUIState: DeductionRoundUIState by mutableStateOf(DeductionRoundUIState.DEFAULT)
 
@@ -25,12 +26,12 @@ class DeductionViewModel(override var session: DeductionSession) :
 
             is DeductionEvent.Guess -> session.guess(event.guess)
         }
-        session.currentRound?.let {
+        session.round?.let {
             roundUIState = it.score.snapRUIState(roundUIState).copy(
                 attempts = it.attempts,
             )
         }
-        println( "Updated DeductionViewModel: roundUIState=$roundUIState")
+        println("Updated DeductionViewModel: roundUIState=$roundUIState")
     }
 }
 

@@ -3,18 +3,19 @@ package vm
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import logger
 import model.jumble.Jumble
 import model.jumble.JumbleEvent
 import model.jumble.JumbleRound
 import model.jumble.JumbleSession
+import util.Log
 
-class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumble, JumbleEvent, JumbleSession> {
+class JumbleViewModel(override var session: JumbleSession) :
+    GameViewModel<Jumble, JumbleEvent, JumbleRound, JumbleSession> {
     override var sessionUIState: JumbleSessionUIState by mutableStateOf(snapSUIState())
     override var roundUIState: JumbleRoundUIState by mutableStateOf(JumbleRoundUIState.EMPTY)
 
     init {
-        logger.info("JumbleViewModel initialized with session: $session")
+        Log.info("JumbleViewModel") { " initialized with session: $session" }
         session.startNewRound()
         session.currentRound?.let {
             roundUIState = it.snapRUIState()
@@ -22,7 +23,6 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
     }
 
     override fun handleEvent(event: JumbleEvent) {
-        println("Handling JumbleEvent: $event")
         when (event) {
             is JumbleEvent.Guess -> {
                 session.handleGuess(event.guess)
@@ -64,7 +64,7 @@ class JumbleViewModel(override var session: JumbleSession) : GameViewModel<Jumbl
     }
 
     fun snapSUIState(): JumbleSessionUIState {
-        return JumbleSessionUIState(rounds = session.rounds.map(JumbleRound::snapRUIState))
+        return JumbleSessionUIState(rounds = session.playedRounds.map(JumbleRound::snapRUIState))
     }
 }
 

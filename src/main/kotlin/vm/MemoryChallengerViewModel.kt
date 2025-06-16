@@ -2,10 +2,12 @@ package vm
 
 import model.memo_challenger.MemoryChallenger
 import model.memo_challenger.MemoryChallengerEvent
+import model.memo_challenger.MemoryChallengerRound
 import model.memo_challenger.MemoryChallengerSession
 
 
-class MemoryChallengerViewModel(override var session: MemoryChallengerSession) : GameViewModel<MemoryChallenger, MemoryChallengerEvent, MemoryChallengerSession> {
+class MemoryChallengerViewModel(override var session: MemoryChallengerSession) :
+    GameViewModel<MemoryChallenger, MemoryChallengerEvent, MemoryChallengerRound, MemoryChallengerSession> {
     override val sessionUIState: MemoryChallengerSessionUIState
         get() = TODO("Not yet implemented")
     override val roundUIState: MemoryChallengerRoundUIState

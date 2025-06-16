@@ -6,6 +6,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun ItemizedWord(
@@ -14,9 +15,9 @@ fun ItemizedWord(
     clickedIndex: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val letterStyle = MaterialTheme.typography.headlineMedium
+    val letterStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
 
-    Row {
+    Row(modifier = modifier) {
         letters.forEachIndexed { index, letter ->
             OutlinedButton(onClick = {
                 clickedLetter(letter)

@@ -1,13 +1,11 @@
 package model.deduction
 
 import model.GameStatus
-import model.Round
 import model.Session
 
-class DeductionSession(val words: List<String>) : Session<Deduction>() {
-    override var round: Round<in Deduction>? = null
-    val currentRound get() = round as? DeductionRound
-    val status get() = currentRound?.gameStatus ?: GameStatus.NotStarted
+class DeductionSession(val words: List<String>) : Session<Deduction, DeductionRound>() {
+    override var round: DeductionRound? = null
+    val status get() = round?.gameStatus ?: GameStatus.NotStarted
 
     fun startNewRound() {
         round = DeductionRound(words.random())
@@ -15,8 +13,8 @@ class DeductionSession(val words: List<String>) : Session<Deduction>() {
     }
 
     fun guess(guess: String) {
-        currentRound?.guess(guess)
-        if (currentRound?.gameStatus != GameStatus.Playing) {
+        round?.guess(guess)
+        if (round?.gameStatus != GameStatus.Playing) {
             startNewRound()
         }
     }

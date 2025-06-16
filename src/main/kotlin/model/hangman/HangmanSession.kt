@@ -2,9 +2,10 @@ package model.hangman
 
 import model.Round
 import model.Session
+import model.jumble.JumbleRound
 
-class HangmanSession(val words: List<String>) : Session<Hangman>() {
-    override var round: Round<in Hangman>? = null
+class HangmanSession(val words: List<String>) : Session<Hangman, HangmanRound>() {
+    override var round: HangmanRound? = null
 
     val currentRound get() = round as HangmanRound?
 

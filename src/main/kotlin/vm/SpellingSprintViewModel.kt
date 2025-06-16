@@ -2,10 +2,11 @@ package vm
 
 import model.spelling_sprint.SpellingSprint
 import model.spelling_sprint.SpellingSprintEvent
+import model.spelling_sprint.SpellingSprintRound
 import model.spelling_sprint.SpellingSprintSession
 
 class SpellingSprintViewModel(override var session: SpellingSprintSession) :
-    GameViewModel<SpellingSprint, SpellingSprintEvent, SpellingSprintSession> {
+    GameViewModel<SpellingSprint, SpellingSprintEvent, SpellingSprintRound, SpellingSprintSession> {
     override val sessionUIState: SpellingSprintSessionUIState
         get() = TODO("Not yet implemented")
     override val roundUIState: SpellingSprintRoundUIState

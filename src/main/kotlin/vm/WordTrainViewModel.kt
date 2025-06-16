@@ -3,10 +3,12 @@ package vm
 import model.GameStatus
 import model.word_train.WordTrain
 import model.word_train.WordTrainEvent
+import model.word_train.WordTrainRound
 import model.word_train.WordTrainSession
 
 
-class WordTrainViewModel(override var session: WordTrainSession) : GameViewModel<WordTrain, WordTrainEvent, WordTrainSession> {
+class WordTrainViewModel(override var session: WordTrainSession) :
+    GameViewModel<WordTrain, WordTrainEvent, WordTrainRound, WordTrainSession> {
     override val sessionUIState: WordTrainSessionUIState
         get() = TODO("Not yet implemented")
     override val roundUIState: WordTrainRoundUIState
@@ -21,4 +23,5 @@ data class WordTrainSessionUIState(
     val status: GameStatus = GameStatus.NotStarted,
     val rounds: List<WordTrainRoundUIState> = emptyList(),
 ) : SessionUIState<WordTrain>
+
 data class WordTrainRoundUIState(val name: String) : RoundUIState<WordTrain>

@@ -6,9 +6,10 @@ open class Round<G : GameType> {
     open var gameStatus: GameStatus = GameStatus.NotStarted
 }
 
-open class Session<G : GameType> {
-    open var round: Round<in G>? = null
+open class Session<G : GameType, R : Round<G>> {
+    open var round: R? = null
     val gameStatus: GameStatus get() = round?.gameStatus ?: GameStatus.NotStarted
+    val playedRounds: MutableList<R> = mutableListOf()
 }
 
 interface GameEvent<G : GameType>
