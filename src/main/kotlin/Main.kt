@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.*
+import kotlinx.coroutines.runBlocking
 import ui.HomeUI
 import ui.deduction.DeductionHomeUI
 import ui.hangman.HangmanHomeUI
@@ -20,19 +20,19 @@ import ui.spelling_sprint.SpellingSprintHomeUI
 import ui.word_train.WordTrainHomeUI
 import vm.HomeViewModel
 import vm.Screen
-import java.util.logging.Logger
 
 
+fun main() = runBlocking {
+    application {
+        val windowState = rememberWindowState(
+            placement = WindowPlacement.Floating, position = WindowPosition(alignment = Alignment.Center)
+        )
 
-fun main() = application {
-    val windowState = rememberWindowState(
-        placement = WindowPlacement.Floating, position = WindowPosition(alignment = Alignment.Center)
-    )
-
-    Window(
-        state = windowState, onCloseRequest = ::exitApplication
-    ) {
-        App(homeViewModel = AppManager.homeViewModel)
+        Window(
+            state = windowState, onCloseRequest = ::exitApplication
+        ) {
+            App(homeViewModel = AppManager.homeViewModel)
+        }
     }
 }
 

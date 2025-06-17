@@ -1,12 +1,17 @@
 package model.memo_challenger
 
-import model.Round
 import model.Session
 
 class MemoryChallengerSession(val words: List<String>) : Session<MemoryChallenger, MemoryChallengerRound>() {
     override var round: MemoryChallengerRound? = null
-        get() = TODO("Not yet implemented")
+    var delayTime = 4
 
-    val currentRound get() = round as MemoryChallengerRound?
+    fun start() {
+        round = MemoryChallengerRound(words.shuffled())
+        round?.start()
+    }
 
+    fun guess(guess: String) {
+        round?.guess(guess = guess)
+    }
 }

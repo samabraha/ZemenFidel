@@ -23,6 +23,9 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
 
+    val coroutinesVersion = "1.10.2"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
     val jsonSerializationV = "1.8.0"
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonSerializationV")
 
