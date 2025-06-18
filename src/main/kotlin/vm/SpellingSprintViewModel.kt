@@ -20,6 +20,7 @@ class SpellingSprintViewModel(override var session: SpellingSprintSession) :
     var revealJob: Job? = null
 
     override fun handleEvent(event: SpellingSprintEvent) {
+        Log.info("SpellingSprintEvent") { "$event" }
         when (event) {
             SpellingSprintEvent.Start -> start()
             SpellingSprintEvent.ShowHints -> showHints()
@@ -40,9 +41,9 @@ class SpellingSprintViewModel(override var session: SpellingSprintSession) :
             if (revealJob?.isActive == true) return
 
             revealJob = scope.launch {
-                while (it.isShowing) {
+                while (it.isShowing && it.gameStatus == GameStatus.Playing) {
                     Log.info("ShowLetter") { "isShowing:${it.isShowing}, ${it.wordSnapshot}" }
-                    delay(session.delayTime.seconds)
+                    delay(session.config.viewTime.seconds)
                     session.revealLetter()
                     setRUIState()
                 }

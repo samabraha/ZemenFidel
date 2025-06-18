@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import model.GameStatus
 import model.deduction.DeductionEvent
+import ui.util.WordInputBox
 import vm.DeductionRoundUIState
 import vm.DeductionSessionUIState
 import vm.DeductionViewModel
@@ -66,6 +66,7 @@ fun NoGamePane(
 fun DeductionPane(
     deductionState: DeductionRoundUIState, takeAction: (DeductionEvent) -> Unit, modifier: Modifier = Modifier
 ) {
+
     val style = MaterialTheme.typography.bodyLarge
     Column(modifier = modifier) {
         DeductionScore(
@@ -74,17 +75,23 @@ fun DeductionPane(
 
         var guess by remember { mutableStateOf("") }
 
-        TextField(singleLine = true, value = guess, onValueChange = {
-            if (it.length <= deductionState.word.length) {
-                guess = it
-            }
-        })
+        val takeAction: () -> Unit = {
+            takeAction(DeductionEvent.Guess(guess))
+            guess = ""
+        }
+
+        WordInputBox(
+            value = guess,
+            onValueChange = {
+                if (it.length <= deductionState.word.length) {
+                    guess = it
+                }
+            },
+            enterAction = takeAction
+        )
 
         if (guess.length == deductionState.word.length) {
-            OutlinedButton(onClick = {
-                takeAction(DeductionEvent.Guess(guess))
-                guess = ""
-            }) {
+            OutlinedButton(onClick = takeAction) {
                 Text(text = "Submit Guess")
             }
         }

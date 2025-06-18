@@ -4,11 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.*
+import model.GameStatus
 import model.memo_challenger.MemoryChallenger
 import model.memo_challenger.MemoryChallengerEvent
 import model.memo_challenger.MemoryChallengerRound
 import model.memo_challenger.MemoryChallengerSession
-import kotlin.time.Duration.Companion.seconds
+import util.Log
 
 
 class MemoryChallengerViewModel(override var session: MemoryChallengerSession) :
@@ -20,34 +21,47 @@ class MemoryChallengerViewModel(override var session: MemoryChallengerSession) :
     var job: Job? = null
 
     override fun handleEvent(event: MemoryChallengerEvent) {
+        Log.info("MemoryChallengerEvent") { "$event" }
         when (event) {
-            is MemoryChallengerEvent.Guess -> guess(event.guess)
-            MemoryChallengerEvent.ShowWords -> showWords()
             MemoryChallengerEvent.Start -> start()
+            MemoryChallengerEvent.ShowWords -> showWords()
+            is MemoryChallengerEvent.Guess -> guess(event.guess)
         }
+
+        setRUIState()
     }
 
     fun start() {
         session.start()
     }
 
-    fun guess(guess: String) {
-        session.guess(guess = guess)
-    }
-
     fun showWords() {
+        Log.info("showWords") { "${session.round}" }
         session.round?.let {
             if (job?.isActive == true) return
             job = scope.launch {
                 while (it.isShowing) {
                     it.showNext()
-                    delay(session.delayTime.seconds)
+                    setRUIState()
+                    delay(session.config.showTime)
                 }
+                setRUIState()
+            }
+        }
+    }
+
+    fun guess(guess: String) {
+        session.guess(guess = guess)
+        session.round?.let {
+            if (it.isShowing) {
+
+                showWords()
             }
         }
     }
 
     fun setRUIState() {
+        Log.info { "MCVM: $roundUIState" }
         session.round?.let {
             val newState = it.snapRUIState(roundUIState)
             if (newState != roundUIState) {
@@ -58,5 +72,10 @@ class MemoryChallengerViewModel(override var session: MemoryChallengerSession) :
 }
 
 data class MemoryChallengerSessionUIState(val name: String = "") : SessionUIState<MemoryChallenger>
-data class MemoryChallengerRoundUIState(val playedWords: List<String> = emptyList(), val isShowing: Boolean = false) :
-    RoundUIState<MemoryChallenger>
+data class MemoryChallengerRoundUIState(
+    val playedWords: List<String> = emptyList(),
+    val isShowing: Boolean = false,
+    val gameStatus: GameStatus = GameStatus.NotStarted,
+    val currentWord: String = "",
+    val position: Int = 0
+) : RoundUIState<MemoryChallenger>

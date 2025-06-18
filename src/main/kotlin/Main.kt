@@ -1,4 +1,5 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -45,7 +46,11 @@ fun App(homeViewModel: HomeViewModel) {
 
     MaterialTheme {
         Surface {
-            Column(modifier = Modifier.fillMaxSize().background(Color(.5f, .8f, .9f))) {
+            Column(
+                modifier = Modifier.fillMaxSize().background(Color(.5f, .8f, .9f)),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 when (screen) {
                     Screen.Home ->
                         HomeUI(homeViewModel, navigate = navigate, modifier = Modifier)

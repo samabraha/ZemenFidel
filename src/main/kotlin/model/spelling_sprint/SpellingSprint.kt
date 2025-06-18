@@ -1,5 +1,6 @@
 package model.spelling_sprint
 
+import model.GameConfig
 import model.GameEvent
 import model.GameType
 
@@ -11,3 +12,5 @@ sealed class SpellingSprintEvent : GameEvent<SpellingSprint> {
     data object Freeze : SpellingSprintEvent()
     data class Guess(val guess: String) : SpellingSprintEvent()
 }
+
+data class SpellingSprintConfig(val viewTime: Int = 3) : GameConfig<SpellingSprint>

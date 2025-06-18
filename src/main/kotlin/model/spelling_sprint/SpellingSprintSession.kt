@@ -4,11 +4,10 @@ import model.Session
 
 class SpellingSprintSession(val words: List<String>) : Session<SpellingSprint, SpellingSprintRound>() {
     override var round: SpellingSprintRound? = null
-
-    val delayTime: Int = 3
+    override val config: SpellingSprintConfig = SpellingSprintConfig()
 
     fun start() {
-        round = SpellingSprintRound(word = words.random())
+        round = SpellingSprintRound(config = config, word = words.random())
         round?.start()
     }
 

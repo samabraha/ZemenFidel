@@ -5,7 +5,7 @@ import model.Round
 import util.Log
 import vm.HangmanRoundUIState
 
-class HangmanRound(val word: String) : Round<Hangman>() {
+class HangmanRound(config: HangmanConfig, val word: String) : Round<Hangman>(config = config) {
     override var gameStatus: GameStatus = GameStatus.Playing
     val guessLetters = MutableList(word.length) { ' ' }
     var lives = word.length * 3

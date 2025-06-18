@@ -1,5 +1,6 @@
 package model.deduction
 
+import model.GameConfig
 import model.GameEvent
 import model.GameType
 
@@ -9,3 +10,5 @@ sealed class DeductionEvent : GameEvent<Deduction> {
     data object Start : DeductionEvent()
     data class Guess(val guess: String) : DeductionEvent()
 }
+
+data class DeductionConfig(val name: String = "") : GameConfig<Deduction>

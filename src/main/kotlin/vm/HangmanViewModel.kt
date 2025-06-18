@@ -40,7 +40,7 @@ class HangmanViewModel(override var session: HangmanSession) :
     }
 
     private fun setRoundUIState() {
-        session.currentRound?.let {
+        session.round?.let {
             val newState = it.snapRUIState(roundUIState)
             if (newState != roundUIState) {
                 roundUIState = newState

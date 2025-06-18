@@ -3,13 +3,14 @@ package model.jumble
 import model.Session
 import util.Log
 
-class JumbleSession(val words: List<String>) : Session<Jumble, JumbleRound>() {
+class JumbleSession(
+    val words: List<String>
+) : Session<Jumble, JumbleRound>() {
     override var round: JumbleRound? = null
-    val currentRound get() = round as? JumbleRound
-
+    override val config = JumbleConfig()
 
     fun handleGuess(guess: String) {
-        currentRound?.let {
+        round?.let {
             val isCorrect = it.guess(guess)
             if (isCorrect) {
                 startNewRound()
@@ -18,11 +19,11 @@ class JumbleSession(val words: List<String>) : Session<Jumble, JumbleRound>() {
     }
 
     fun startNewRound() {
-        currentRound?.let {
+        round?.let {
             Log.info("startNewRound", { "Ending current Jumble round with word: ${it.word}" })
             playedRounds.add(it)
         }
 
-        round = JumbleRound(words.random())
+        round = JumbleRound(config = config, word = words.random())
     }
 }

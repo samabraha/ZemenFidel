@@ -2,12 +2,15 @@ package model
 
 interface GameType
 
-open class Round<G : GameType> {
+open class Round<G : GameType>(
+    open val config: GameConfig<G>
+) {
     open var gameStatus: GameStatus = GameStatus.NotStarted
 }
 
-open class Session<G : GameType, R : Round<G>> {
+abstract class Session<G : GameType, R : Round<G>> {
     open var round: R? = null
+    abstract val config: GameConfig<G>
     val gameStatus: GameStatus get() = round?.gameStatus ?: GameStatus.NotStarted
     val playedRounds: MutableList<R> = mutableListOf()
 }

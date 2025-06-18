@@ -18,18 +18,18 @@ class HomeViewModel(wordsRepository: WordsRepository = WordsRepository()) {
     val words = wordsRepository.words
     var currentScreen = Screen.Home
 
-    val hangmanVMProvider: () -> HangmanViewModel = {
-        HangmanViewModel(HangmanSession(words))
-    }
-    val jumbleVMProvider: () -> JumbleViewModel = {
-        JumbleViewModel(JumbleSession(words))
-    }
+    val hangmanVMProvider: () -> HangmanViewModel =
+        { HangmanViewModel(HangmanSession(words)) }
+    val jumbleVMProvider: () -> JumbleViewModel =
+        { JumbleViewModel(JumbleSession(words)) }
     val spellingSprintVMProvider: () -> SpellingSprintViewModel =
         { SpellingSprintViewModel(SpellingSprintSession(words)) }
     val memoryChallengerVMProvider: () -> MemoryChallengerViewModel =
         { MemoryChallengerViewModel(MemoryChallengerSession(words)) }
-    val deductionVMProvider: () -> DeductionViewModel = { DeductionViewModel(DeductionSession(words)) }
-    val wordTrainVMProvider: () -> WordTrainViewModel = { WordTrainViewModel(WordTrainSession(words)) }
+    val deductionVMProvider: () -> DeductionViewModel =
+        { DeductionViewModel(DeductionSession(words)) }
+    val wordTrainVMProvider: () -> WordTrainViewModel =
+        { WordTrainViewModel(WordTrainSession(words)) }
 
     val gameInfoList = listOf(
         GameInfo<Hangman>(name = "Hangman", screen = Screen.Hangman),

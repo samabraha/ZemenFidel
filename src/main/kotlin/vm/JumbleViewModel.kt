@@ -17,7 +17,7 @@ class JumbleViewModel(override var session: JumbleSession) :
     init {
         Log.info("JumbleViewModel") { " initialized with session: $session" }
         session.startNewRound()
-        session.currentRound?.let {
+        session.round?.let {
             roundUIState = it.snapRUIState()
         }
     }
@@ -26,7 +26,7 @@ class JumbleViewModel(override var session: JumbleSession) :
         when (event) {
             is JumbleEvent.Guess -> {
                 session.handleGuess(event.guess)
-                session.currentRound?.let {
+                session.round?.let {
                     roundUIState = it.snapRUIState()
                 }
                 sessionUIState = snapSUIState()

@@ -4,13 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import model.GameStatus
 import model.spelling_sprint.SpellingSprintEvent
 import ui.util.ItemizedWord
+import ui.util.WordInputBox
 import util.Log
 import vm.Screen
 import vm.SpellingSprintRoundUIState
@@ -33,7 +37,7 @@ fun SpellingSprintHomeUI(
             takeAction = sprintViewModel::handleEvent,
             modifier = modifier
         )
-         ElevatedButton(onClick = { navigateHome() }) {
+        ElevatedButton(onClick = { navigateHome() }) {
             Text(text = "ቻው")
         }
     }
@@ -55,7 +59,7 @@ fun SpellingSprintPane(
 
         var value by remember { mutableStateOf("") }
 
-        TextField(value = value, onValueChange = { value = it })
+        WordInputBox(value = value, onValueChange = { value = it })
 
         Row {
             if (roundUIState.isShowing) {
@@ -80,7 +84,7 @@ fun SpellingSprintPane(
 
 @Composable
 fun NoGameSpellingSprint(
-    takeAction:(SpellingSprintEvent) -> Unit,
+    takeAction: (SpellingSprintEvent) -> Unit,
     roundUIState: SpellingSprintRoundUIState,
     modifier: Modifier = Modifier
 ) {
@@ -108,8 +112,6 @@ fun NoGameSpellingSprint(
                     takeSSAction = takeAction,
                     modifier = modifier
                 )
-
-
             }
         }
     }

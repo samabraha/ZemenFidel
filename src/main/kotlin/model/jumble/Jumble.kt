@@ -1,5 +1,6 @@
 package model.jumble
 
+import model.GameConfig
 import model.GameEvent
 import model.GameType
 
@@ -11,3 +12,5 @@ sealed class JumbleEvent : GameEvent<Jumble> {
     data object Undo : JumbleEvent()
     data class MoveLetter(val index: Int) : JumbleEvent()
 }
+
+data class JumbleConfig(val name: String = "") : GameConfig<Jumble>

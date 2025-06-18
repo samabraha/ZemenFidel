@@ -3,17 +3,18 @@ package ui.hangman
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.font.FontWeight
 import model.GameStatus
 import model.hangman.HangmanEvent
 import ui.util.ItemizedWord
+import ui.util.WordInputBox
 import vm.HangmanRoundUIState
 import vm.HangmanViewModel
 import vm.Screen
@@ -89,21 +90,14 @@ fun HangmanPane(rouUIState: HangmanRoundUIState, takeAction: (HangmanEvent) -> U
         val tries = rouUIState.tries
         val guesses = rouUIState.guesses
 
-
         ItemizedWord(letters = guesses)
         ItemizedWord(letters = tries)
 
-        TextField(
+        WordInputBox(
             value = value,
             onValueChange = { value = it },
-            textStyle = style,
-            singleLine = true,
-            modifier = Modifier.onKeyEvent({
-                if (it.key == Key.Enter) {
-                    guess()
-                }
-                return@onKeyEvent true
-            })
+            enterAction = guess,
+            escapeAction = { value = "" }
         )
 
         OutlinedButton(onClick = {

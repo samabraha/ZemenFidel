@@ -2,12 +2,14 @@ package model.memo_challenger
 
 import model.Session
 
-class MemoryChallengerSession(val words: List<String>) : Session<MemoryChallenger, MemoryChallengerRound>() {
+class MemoryChallengerSession(
+    val words: List<String>
+) : Session<MemoryChallenger, MemoryChallengerRound>() {
     override var round: MemoryChallengerRound? = null
-    var delayTime = 4
+    override val config = MemoryChallengerConfig()
 
     fun start() {
-        round = MemoryChallengerRound(words.shuffled())
+        round = MemoryChallengerRound(config = config, words = words.shuffled())
         round?.start()
     }
 

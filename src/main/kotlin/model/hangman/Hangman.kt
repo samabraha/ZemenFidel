@@ -1,5 +1,6 @@
 package model.hangman
 
+import model.GameConfig
 import model.GameEvent
 import model.GameType
 
@@ -10,3 +11,5 @@ sealed class HangmanEvent : GameEvent<Hangman> {
     data class Guess(val letter: Char) : HangmanEvent()
 
 }
+
+data class HangmanConfig(val name: String = "") : GameConfig<Hangman>

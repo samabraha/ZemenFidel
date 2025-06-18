@@ -16,10 +16,10 @@ object Log {
         "java.util.logging.Logger"
     )
 
-    inline fun info(tag: String, msg: () -> String) = log(Level.INFO, tag, msg)
-    inline fun warn(tag: String, msg: () -> String) = log(Level.WARNING, tag, msg)
-    inline fun debug(tag: String, msg: () -> String) = log(Level.FINE, tag, msg)
-    inline fun error(tag: String, msg: () -> String) = log(Level.SEVERE, tag, msg)
+    inline fun info(tag: String = "", msg: () -> String) = log(Level.INFO, tag, msg)
+    inline fun warn(tag: String = "", msg: () -> String) = log(Level.WARNING, tag, msg)
+    inline fun debug(tag: String = "", msg: () -> String) = log(Level.FINE, tag, msg)
+    inline fun error(tag: String = "", msg: () -> String) = log(Level.SEVERE, tag, msg)
 
 
     inline fun log(level: Level, tag: String, msg: () -> String) {
