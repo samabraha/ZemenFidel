@@ -5,8 +5,8 @@ import androidx.compose.material.Text
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import model.GameStatus
 import model.word_train.WordTrainEvent
+import model.word_train.WordTrainState
 import vm.Screen
 import vm.WordTrainRoundUIState
 import vm.WordTrainSessionUIState
@@ -20,7 +20,7 @@ fun WordTrainHomeUI(
 ) {
     val sessionUIState = wordTrainViewModel.sessionUIState
     val roundUIState = wordTrainViewModel.roundUIState
-    if (sessionUIState.status == GameStatus.NotStarted) {
+    if (sessionUIState.status == WordTrainState.NotStarted) {
         NoGameWordTrainPane(
             sessionUIState = sessionUIState,
             wordTrainAction = wordTrainViewModel::handleEvent,

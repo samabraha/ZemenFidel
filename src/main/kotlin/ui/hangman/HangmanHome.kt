@@ -11,8 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import model.GameStatus
 import model.hangman.HangmanEvent
+import model.hangman.HangmanState
 import ui.util.ItemizedWord
 import ui.util.WordInputBox
 import vm.HangmanRoundUIState
@@ -37,30 +37,31 @@ fun HangmanHomeUI(
     ) {
         val style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         when (roundUIState.gameStatus) {
-            GameStatus.Won -> {
+            HangmanState.Won -> {
                 Text(text = listOf("ተዓወት!", "ቅኑዕ መልሲ!").random(), style = style)
                 Text(text = roundUIState.word, style = style)
             }
 
-            GameStatus.Lost -> {
+            HangmanState.Lost -> {
                 Text(text = listOf("ክላእ", "ክላሌዓለም", "ኣሕ!").random(), style = style)
                 Text(text = roundUIState.word, style = style)
             }
 
-            GameStatus.Playing, GameStatus.Drawn, GameStatus.NotStarted -> {}
+            HangmanState.Playing -> {
+                HangmanPane(
+                    rouUIState = roundUIState,
+                    takeAction = takeAction,
+                    modifier = modifier
+                )
+            }
+
+            else -> {
+                Button(onClick = { takeAction(HangmanEvent.Start) }) {
+                    Text(text = "Start")
+                }
+            }
         }
 
-        if (roundUIState.gameStatus != GameStatus.Playing) {
-            Button(onClick = { takeAction(HangmanEvent.Start) }) {
-                Text(text = "Start")
-            }
-        } else {
-            HangmanPane(
-                rouUIState = roundUIState,
-                takeAction = takeAction,
-                modifier = modifier
-            )
-        }
 
         Button(onClick = { navigate(Screen.Home) }) {
             Text(text = "Back to Home")

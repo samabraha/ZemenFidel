@@ -1,11 +1,10 @@
 package model.deduction
 
-import model.GameStatus
 import model.Round
 import vm.DeductionRoundUIState
 
 class DeductionRound(config: DeductionConfig, val word: String) : Round<Deduction>(config = config) {
-    override var gameStatus: GameStatus = GameStatus.Playing
+    var gameStatus: DeductionState = DeductionState.Playing
     var score: DeductionWordScore = DeductionWordScore(
         word = word,
         guess = "",
@@ -23,7 +22,7 @@ class DeductionRound(config: DeductionConfig, val word: String) : Round<Deductio
         attempts++
         this.score = DeductionWordScore.fromGuess(word = word, guess = guess)
         if (this.score.correct == word.length) {
-            gameStatus = GameStatus.Won
+            gameStatus = DeductionState.Won
         }
     }
 
@@ -124,15 +123,6 @@ class DeductionRound(config: DeductionConfig, val word: String) : Round<Deductio
                 }
                 return Pair(statusList, usedInWord)
             }
-
-            val DEFAULT = DeductionWordScore(
-                word = "",
-                guess = "",
-                correct = 0,
-                misplaced = 0,
-                incorrect = 0,
-                status = emptyList()
-            )
         }
     }
 }

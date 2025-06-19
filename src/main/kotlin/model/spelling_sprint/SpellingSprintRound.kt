@@ -1,6 +1,5 @@
 package model.spelling_sprint
 
-import model.GameStatus
 import model.Round
 import util.Log
 import vm.SpellingSprintRoundUIState
@@ -10,7 +9,7 @@ class SpellingSprintRound(
     config: SpellingSprintConfig,
     val word: String
 ) : Round<SpellingSprint>(config = config) {
-    override var gameStatus: GameStatus = GameStatus.NotStarted
+    var gameStatus: SpellingSprintState = SpellingSprintState.NotStarted
 
     val wordSnapshot: MutableList<Char> = MutableList(word.length) { ' ' }
     var points = word.length
@@ -18,7 +17,7 @@ class SpellingSprintRound(
     var isShowing = false
 
     fun start() {
-        gameStatus = GameStatus.Playing
+        gameStatus = SpellingSprintState.Playing
         isShowing = true
     }
 
@@ -34,7 +33,7 @@ class SpellingSprintRound(
         wordSnapshot[position] = word[position]
         points--
 
-        if (' ' !in wordSnapshot) gameStatus = GameStatus.Lost
+        if (' ' !in wordSnapshot) gameStatus = SpellingSprintState.Lost
     }
 
     fun freeze() {
@@ -50,7 +49,7 @@ class SpellingSprintRound(
 
     fun guess(guess: String) {
         if (guess == word) {
-            gameStatus = GameStatus.Won
+            gameStatus = SpellingSprintState.Won
         }
     }
 }

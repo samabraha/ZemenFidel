@@ -19,3 +19,5 @@ data class MemoryChallengerConfig(
     val showTime: Duration = 2.seconds,
     val maxTries: Int = 5
 ) : GameConfig<MemoryChallenger>
+
+enum class MemoryChallengerState { Won, Lost, Playing, NotStarted }

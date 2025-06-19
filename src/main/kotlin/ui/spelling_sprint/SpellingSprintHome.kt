@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Divider
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.OutlinedButton
@@ -11,8 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import model.GameStatus
 import model.spelling_sprint.SpellingSprintEvent
+import model.spelling_sprint.SpellingSprintState
 import ui.util.ItemizedWord
 import ui.util.WordInputBox
 import util.Log
@@ -32,11 +33,31 @@ fun SpellingSprintHomeUI(
     val navigateHome = { navigate(Screen.Home) }
 
     Column {
-        NoGameSpellingSprint(
-            roundUIState = roundUIState,
-            takeAction = sprintViewModel::handleEvent,
-            modifier = modifier
-        )
+        when (roundUIState.gameStatus) {
+            SpellingSprintState.Playing -> {
+                SpellingSprintPane(
+                    roundUIState = roundUIState,
+                    takeSSAction = sprintViewModel::handleEvent,
+                    modifier = modifier
+                )
+            }
+
+            SpellingSprintState.Won -> {
+                Text(text = "ተዓወት!")
+            }
+
+            SpellingSprintState.Lost -> {
+                Text(text = "ደጊምና ንፈትን!")
+            }
+
+            else -> {}
+        }
+
+        Divider()
+        OutlinedButton(onClick = { sprintViewModel.handleEvent(SpellingSprintEvent.Start) }) {
+            Text(text = "Start!")
+        }
+        Divider()
         ElevatedButton(onClick = { navigateHome() }) {
             Text(text = "ቻው")
         }
@@ -59,7 +80,15 @@ fun SpellingSprintPane(
 
         var value by remember { mutableStateOf("") }
 
-        WordInputBox(value = value, onValueChange = { value = it })
+        val takeAGuess = {
+            takeSSAction(SpellingSprintEvent.Guess(value))
+            value = ""
+        }
+
+        WordInputBox(
+            value = value,
+            onValueChange = { value = it },
+            enterAction = { takeAGuess() })
 
         Row {
             if (roundUIState.isShowing) {
@@ -68,50 +97,12 @@ fun SpellingSprintPane(
                 }
             } else {
                 Button(onClick = { takeSSAction(SpellingSprintEvent.ShowHints) }) {
-                    Text("Start")
+                    Text("Show Hints")
                 }
 
-                Button(onClick = {
-                    takeSSAction(SpellingSprintEvent.Guess(value))
-                    value = ""
-                }) {
+                Button(onClick = { takeAGuess() }) {
                     Text("Guess")
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun NoGameSpellingSprint(
-    takeAction: (SpellingSprintEvent) -> Unit,
-    roundUIState: SpellingSprintRoundUIState,
-    modifier: Modifier = Modifier
-) {
-    Column {
-
-        when (roundUIState.gameStatus) {
-            GameStatus.Won -> {
-                Text(text = "ተዓወት!")
-            }
-
-            GameStatus.Lost -> {
-                Text(text = "ደጊምና ንፈትን!")
-            }
-
-            GameStatus.NotStarted -> {
-                OutlinedButton(onClick = { takeAction(SpellingSprintEvent.Start) }) {
-                    Text(text = "Start!")
-                }
-
-            }
-
-            else -> {
-                SpellingSprintPane(
-                    roundUIState = roundUIState,
-                    takeSSAction = takeAction,
-                    modifier = modifier
-                )
             }
         }
     }

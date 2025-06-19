@@ -14,3 +14,5 @@ sealed class SpellingSprintEvent : GameEvent<SpellingSprint> {
 }
 
 data class SpellingSprintConfig(val viewTime: Int = 3) : GameConfig<SpellingSprint>
+
+enum class SpellingSprintState { Won, Lost, Playing, NotStarted }

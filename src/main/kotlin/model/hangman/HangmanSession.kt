@@ -8,7 +8,6 @@ class HangmanSession(
     override var round: HangmanRound? = null
     override val config = HangmanConfig()
 
-
     fun start() {
         round = HangmanRound(config = config, word = words.random())
     }

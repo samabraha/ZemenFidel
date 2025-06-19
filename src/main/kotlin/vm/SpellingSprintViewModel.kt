@@ -4,11 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.*
-import model.GameStatus
-import model.spelling_sprint.SpellingSprint
-import model.spelling_sprint.SpellingSprintEvent
-import model.spelling_sprint.SpellingSprintRound
-import model.spelling_sprint.SpellingSprintSession
+import model.spelling_sprint.*
 import util.Log
 import kotlin.time.Duration.Companion.seconds
 
@@ -41,7 +37,7 @@ class SpellingSprintViewModel(override var session: SpellingSprintSession) :
             if (revealJob?.isActive == true) return
 
             revealJob = scope.launch {
-                while (it.isShowing && it.gameStatus == GameStatus.Playing) {
+                while (it.isShowing && it.gameStatus == SpellingSprintState.Playing) {
                     Log.info("ShowLetter") { "isShowing:${it.isShowing}, ${it.wordSnapshot}" }
                     delay(session.config.viewTime.seconds)
                     session.revealLetter()
@@ -77,5 +73,5 @@ data class SpellingSprintRoundUIState(
     val wordSnapshot: List<Char> = emptyList(),
     val points: Int = 0,
     val isShowing: Boolean = false,
-    val gameStatus: GameStatus = GameStatus.NotStarted
+    val gameStatus: SpellingSprintState = SpellingSprintState.NotStarted
 ) : RoundUIState<SpellingSprint>

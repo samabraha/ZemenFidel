@@ -12,3 +12,5 @@ sealed class DeductionEvent : GameEvent<Deduction> {
 }
 
 data class DeductionConfig(val name: String = "") : GameConfig<Deduction>
+
+enum class DeductionState { Playing, Lost, Won, NotStarted }

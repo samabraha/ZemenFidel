@@ -4,11 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.*
-import model.GameStatus
-import model.memo_challenger.MemoryChallenger
-import model.memo_challenger.MemoryChallengerEvent
-import model.memo_challenger.MemoryChallengerRound
-import model.memo_challenger.MemoryChallengerSession
+import model.memo_challenger.*
 import util.Log
 
 
@@ -75,7 +71,7 @@ data class MemoryChallengerSessionUIState(val name: String = "") : SessionUIStat
 data class MemoryChallengerRoundUIState(
     val playedWords: List<String> = emptyList(),
     val isShowing: Boolean = false,
-    val gameStatus: GameStatus = GameStatus.NotStarted,
+    val gameStatus: MemoryChallengerState = MemoryChallengerState.NotStarted,
     val currentWord: String = "",
     val position: Int = 0
 ) : RoundUIState<MemoryChallenger>

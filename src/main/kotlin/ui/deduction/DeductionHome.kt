@@ -7,8 +7,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import model.GameStatus
 import model.deduction.DeductionEvent
+import model.deduction.DeductionState
 import ui.util.WordInputBox
 import vm.DeductionRoundUIState
 import vm.DeductionSessionUIState
@@ -23,7 +23,7 @@ fun DeductionHomeUI(
     val sessionUIState = deductionViewModel.sessionUIState
     Column(modifier = modifier) {
 
-        if (sessionUIState.status == GameStatus.NotStarted) {
+        if (sessionUIState.status != DeductionState.Playing) {
             NoGamePane(
                 sessionUIState = sessionUIState,
                 deductionAction = deductionViewModel::handleEvent,

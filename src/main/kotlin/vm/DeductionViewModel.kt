@@ -3,11 +3,11 @@ package vm
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import model.GameStatus
 import model.deduction.Deduction
 import model.deduction.DeductionEvent
 import model.deduction.DeductionRound
 import model.deduction.DeductionSession
+import model.deduction.DeductionState
 
 
 class DeductionViewModel(override var session: DeductionSession) :
@@ -21,7 +21,7 @@ class DeductionViewModel(override var session: DeductionSession) :
             DeductionEvent.Start -> {
                 session.startNewRound()
 
-                sessionUIState = sessionUIState.copy(status = GameStatus.Playing)
+                sessionUIState = sessionUIState.copy(status = DeductionState.Playing)
             }
 
             is DeductionEvent.Guess -> session.guess(event.guess)
@@ -36,7 +36,7 @@ class DeductionViewModel(override var session: DeductionSession) :
 }
 
 data class DeductionSessionUIState(
-    val status: GameStatus = GameStatus.NotStarted,
+    val status: DeductionState = DeductionState.NotStarted,
     val rounds: List<DeductionRoundUIState> = emptyList(),
 ) : SessionUIState<Deduction>
 

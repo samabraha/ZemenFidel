@@ -14,3 +14,5 @@ sealed class JumbleEvent : GameEvent<Jumble> {
 }
 
 data class JumbleConfig(val name: String = "") : GameConfig<Jumble>
+
+enum class JumbleState { Playing, Won, Lost }

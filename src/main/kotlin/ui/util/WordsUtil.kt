@@ -53,5 +53,4 @@ fun WordInputBox(
             true
         })
     )
-
 }

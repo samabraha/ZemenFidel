@@ -1,6 +1,5 @@
 package model.memo_challenger
 
-import model.GameStatus
 import model.Round
 import util.Log
 import vm.MemoryChallengerRoundUIState
@@ -9,7 +8,7 @@ class MemoryChallengerRound(
     val words: List<String>,
     config: MemoryChallengerConfig
 ) : Round<MemoryChallenger>(config = config) {
-    override var gameStatus: GameStatus = GameStatus.NotStarted
+    var gameState: MemoryChallengerState = MemoryChallengerState.NotStarted
     val playedWords = mutableListOf<String>()
     val answers = mutableListOf<String>()
     var currentWord = ""
@@ -22,13 +21,13 @@ class MemoryChallengerRound(
         Log.info { "isShowing: $isShowing cw:$currentWord" }
         addNewWord()
         isShowing = true
-        gameStatus = GameStatus.Playing
+        gameState = MemoryChallengerState.Playing
     }
 
     fun addNewWord() {
         Log.info("addNW") { "adding new word" }
         if (playedWords.size >= words.size) {
-            gameStatus = GameStatus.Won
+            gameState = MemoryChallengerState.Won
             return
         }
 
@@ -53,7 +52,7 @@ class MemoryChallengerRound(
     fun guess(guess: String) {
         Log.info("MC-Guessing") { "guess:${guess}, tr:$tries" }
         if (tries == 0) {
-            gameStatus = GameStatus.Lost
+            gameState = MemoryChallengerState.Lost
             return
         }
 
@@ -85,12 +84,10 @@ class MemoryChallengerRound(
     fun snapRUIState(
         roundUIState: MemoryChallengerRoundUIState
     ) = roundUIState.copy(
-        gameStatus = gameStatus,
+        gameStatus = gameState,
         playedWords = playedWords,
         isShowing = isShowing,
         currentWord = currentWord,
         position = position
-    ).also {
-        Log.info("MC UIState") { "$it" }
-    }
+    )
 }

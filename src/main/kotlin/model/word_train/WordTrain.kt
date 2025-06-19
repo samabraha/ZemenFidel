@@ -12,3 +12,5 @@ sealed class WordTrainEvent : GameEvent<WordTrain> {
 }
 
 data class WordTrainConfig(val name: String = "") : GameConfig<WordTrain>
+
+enum class WordTrainState { Won, Lost, Playing, NotStarted }

@@ -3,11 +3,7 @@ package vm
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import model.GameStatus
-import model.hangman.Hangman
-import model.hangman.HangmanEvent
-import model.hangman.HangmanRound
-import model.hangman.HangmanSession
+import model.hangman.*
 import util.Log
 
 class HangmanViewModel(override var session: HangmanSession) :
@@ -59,7 +55,7 @@ data class HangmanRoundUIState(
     val word: String,
     val guesses: List<Char>,
     val lives: Int = 0,
-    val gameStatus: GameStatus = GameStatus.NotStarted,
+    val gameStatus: HangmanState = HangmanState.NotStarted,
     val tries: List<Char>
 ) : RoundUIState<Hangman> {
     companion object {

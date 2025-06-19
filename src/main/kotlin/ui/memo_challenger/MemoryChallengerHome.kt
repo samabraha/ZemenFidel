@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import model.GameStatus
 import model.memo_challenger.MemoryChallengerEvent
+import model.memo_challenger.MemoryChallengerState
 import ui.util.WordInputBox
 import vm.MemoryChallengerRoundUIState
 import vm.MemoryChallengerViewModel
@@ -18,25 +18,34 @@ import vm.Screen
 
 @Composable
 fun MemoryChallengerHomeUI(
-    memoryChallengerViewModel: MemoryChallengerViewModel, modifier: Modifier = Modifier, navigate: (Screen) -> Unit
+    memoryChallengerViewModel: MemoryChallengerViewModel,
+    modifier: Modifier = Modifier,
+    navigate: (Screen) -> Unit
 ) {
-
     val sessionUIState = memoryChallengerViewModel.sessionUIState
     val roundUIState = memoryChallengerViewModel.roundUIState
 
-    when (roundUIState.gameStatus) {
-        GameStatus.Playing -> MemoryChallengerPane(
-            roundUIState = roundUIState, handleEvent = memoryChallengerViewModel::handleEvent
-        )
+    Column {
+        when (roundUIState.gameStatus) {
+            MemoryChallengerState.Playing -> MemoryChallengerPane(
+                roundUIState = roundUIState,
+                handleEvent = memoryChallengerViewModel::handleEvent
+            )
 
-        GameStatus.Won -> {}
-        GameStatus.Lost -> {}
-        GameStatus.Drawn -> {}
-        GameStatus.NotStarted -> {
-            OutlinedButton(onClick = {
-                memoryChallengerViewModel.handleEvent(MemoryChallengerEvent.Start)
-            }) {
-                Text(text = "ንጀምር!")
+            MemoryChallengerState.Won -> {
+                Text(text = "ተዓወት!")
+            }
+
+            MemoryChallengerState.Lost -> {
+                Text(text = "ደጊምና ንፈትን!")
+            }
+
+            MemoryChallengerState.NotStarted -> {
+                OutlinedButton(onClick = {
+                    memoryChallengerViewModel.handleEvent(MemoryChallengerEvent.Start)
+                }) {
+                    Text(text = "ንጀምር!")
+                }
             }
         }
     }
@@ -62,7 +71,10 @@ fun MemoryChallengerPane(
 
         if (roundUIState.isShowing) {
             if (roundUIState.currentWord.isNotBlank()) {
-                Text(text = ">> ${roundUIState.position + 1}", style = style.copy(fontWeight = FontWeight.Bold))
+                Text(
+                    text = ">> ${roundUIState.position}",
+                    style = style.copy(fontWeight = FontWeight.Bold)
+                )
                 Text(text = roundUIState.currentWord, style = style.copy(fontWeight = FontWeight.Bold))
             }
         } else {

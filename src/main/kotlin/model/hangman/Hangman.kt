@@ -13,3 +13,5 @@ sealed class HangmanEvent : GameEvent<Hangman> {
 }
 
 data class HangmanConfig(val name: String = "") : GameConfig<Hangman>
+
+enum class HangmanState { Playing, Lost, Won , NotStarted}
