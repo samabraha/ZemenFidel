@@ -1,6 +1,7 @@
 package model.hangman
 
 import model.Round
+import util.GeezUtil.isSiblingsWith
 import util.Log
 import vm.HangmanRoundUIState
 
@@ -13,10 +14,10 @@ class HangmanRound(config: HangmanConfig, val word: String) : Round<Hangman>(con
     fun guess(guess: Char) {
         if (guess in guessLetters) return
         if (guess in incorrectLetters) return
-        if (guess in word) {
+        if (word.any { guess.isSiblingsWith(it) }) {
             word.forEachIndexed { i, l ->
-                if (guess == l) {
-                    guessLetters[i] = l
+                if (guess.isSiblingsWith(l)) {
+                    guessLetters[i] = word[i]
                 }
             }
         } else {

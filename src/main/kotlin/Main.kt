@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,11 +20,14 @@ import ui.jumble.JumbleHomeUI
 import ui.memo_challenger.MemoryChallengerHomeUI
 import ui.spelling_sprint.SpellingSprintHomeUI
 import ui.word_train.WordTrainHomeUI
+import util.GeezUtil
 import vm.HomeViewModel
 import vm.Screen
 
 
 fun main() = runBlocking {
+    GeezUtil.primaryLetters.also { println(it) }
+
     application {
         val windowState = rememberWindowState(
             placement = WindowPlacement.Floating, position = WindowPosition(alignment = Alignment.Center)

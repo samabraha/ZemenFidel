@@ -3,7 +3,11 @@ package model.deduction
 import model.Round
 import vm.DeductionRoundUIState
 
-class DeductionRound(config: DeductionConfig, val word: String) : Round<Deduction>(config = config) {
+class DeductionRound(
+    config: DeductionConfig = DeductionConfig(),
+    val word: String
+) :
+    Round<Deduction>(config = config) {
     var gameStatus: DeductionState = DeductionState.Playing
     var score: DeductionWordScore = DeductionWordScore(
         word = word,

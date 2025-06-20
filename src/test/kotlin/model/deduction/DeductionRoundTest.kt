@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class DeductionRoundTest {
     @Test
     fun `returns correct score for empty guess`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
 
         assertThrows<IllegalArgumentException> {
             round.guess("")
@@ -17,7 +17,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for exact match`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("abcde")
         val score = round.score
         assertEquals(5, score.correct)
@@ -27,7 +27,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for word with doubled letters`() {
-        val round = DeductionRound("aabbcc")
+        val round = DeductionRound(word = "aabbcc")
         round.guess("aabbcc")
         val score = round.score
         assertEquals(6, score.correct)
@@ -37,7 +37,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for partial match with misplaced letters`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("abced")
         val score = round.score
         assertEquals(3, score.correct)
@@ -47,7 +47,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for no matches`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("fghij")
         val score = round.score
         assertEquals(0, score.correct)
@@ -57,7 +57,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for mixed matches`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("abfgh")
         val score = round.score
         assertEquals(2, score.correct)
@@ -67,7 +67,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for repeated letters in guess`() {
-        val round = DeductionRound("aabbcc")
+        val round = DeductionRound(word = "aabbcc")
         round.guess("abcabc")
         val score = round.score
         assertEquals(2, score.correct)
@@ -77,7 +77,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for wrong letters in guess`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("xyzab")
         val score = round.score
         assertEquals(0, score.correct)
@@ -87,7 +87,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for all misplaced letters`() {
-        val round = DeductionRound("abcde")
+        val round = DeductionRound(word = "abcde")
         round.guess("ecdba")
         val score = round.score
         assertEquals(0, score.correct)
@@ -97,7 +97,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for all letters misplaced with duplicates`() {
-        val round = DeductionRound("SPEED")
+        val round = DeductionRound(word = "SPEED")
         round.guess("ERASE")
         val guess = round.score
         assertEquals(0, guess.correct)
@@ -117,7 +117,7 @@ class DeductionRoundTest {
 
     @Test
     fun `returns correct score for all letters misplaced with duplicates in guess`() {
-        val round = DeductionRound("ABCDEF")
+        val round = DeductionRound(word = "ABCDEF")
         round.guess("ABCABC")
         val guess = round.score
         assertEquals(3, guess.correct)

@@ -6,19 +6,19 @@ import kotlin.test.Test
 class JumbleRoundTest {
     @Test
     fun `returns true for correct guess`() {
-        val round = JumbleRound("apple")
+        val round = JumbleRound(word = "apple")
         assertTrue(round.guess("apple"))
     }
 
     @Test
     fun `returns false for incorrect guess`() {
-        val round = JumbleRound("apple")
+        val round = JumbleRound(word = "apple")
         assertFalse(round.guess("banana"))
     }
 
     @Test
     fun `jumbled word is different from original word`() {
-        val round = JumbleRound("apple")
+        val round = JumbleRound(word = "apple")
         assertNotEquals("apple", round.jumbledWord)
     }
 
@@ -29,7 +29,6 @@ class JumbleRoundTest {
         round.reset()
         assertNotEquals(originalJumbled, round.jumbledWord)
     }
-
 
 
 }

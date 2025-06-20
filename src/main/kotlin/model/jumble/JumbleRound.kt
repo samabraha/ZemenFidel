@@ -3,7 +3,7 @@ package model.jumble
 import model.Round
 import vm.JumbleRoundUIState
 
-class JumbleRound(val word: String, config: JumbleConfig) : Round<Jumble>(config = config) {
+class JumbleRound(val word: String, config: JumbleConfig = JumbleConfig()) : Round<Jumble>(config = config) {
     var gameStatus: JumbleState = JumbleState.Playing
     var jumbledWord: String
     private var guess: String = ""
