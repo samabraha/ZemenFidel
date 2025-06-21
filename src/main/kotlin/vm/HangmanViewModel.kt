@@ -3,13 +3,18 @@ package vm
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import model.hangman.*
+import model.GameOutcome
+import model.LifecycleState
+import model.hangman.Hangman
+import model.hangman.HangmanEvent
+import model.hangman.HangmanRound
+import model.hangman.HangmanSession
 import util.Log
 
 class HangmanViewModel(override var session: HangmanSession) :
     GameViewModel<Hangman, HangmanEvent, HangmanRound, HangmanSession> {
-    override val sessionUIState: HangmanSessionUIState by mutableStateOf(HangmanSessionUIState.DEFAULT)
-    override var roundUIState: HangmanRoundUIState by mutableStateOf(HangmanRoundUIState.DEFAULT)
+    override val sessionUIState: HangmanSessionUIState by mutableStateOf(HangmanSessionUIState())
+    override var roundUIState: HangmanRoundUIState by mutableStateOf(HangmanRoundUIState())
 
     init {
         Log.info("HangmanViewModel", { "initialized with session: $session" })
@@ -27,7 +32,6 @@ class HangmanViewModel(override var session: HangmanSession) :
 
     fun start() {
         session.start()
-
     }
 
     fun guess(event: HangmanEvent.Guess) {
@@ -45,20 +49,13 @@ class HangmanViewModel(override var session: HangmanSession) :
     }
 }
 
-data class HangmanSessionUIState(val name: String = "") : SessionUIState<Hangman> {
-    companion object {
-        val DEFAULT = HangmanSessionUIState()
-    }
-}
+data class HangmanSessionUIState(val name: String = "") : SessionUIState<Hangman>
 
 data class HangmanRoundUIState(
-    val word: String,
-    val guesses: List<Char>,
+    val word: String = "",
+    val guesses: List<Char> = emptyList(),
     val lives: Int = 0,
-    val gameStatus: HangmanState = HangmanState.NotStarted,
-    val tries: List<Char>
-) : RoundUIState<Hangman> {
-    companion object {
-        val DEFAULT = HangmanRoundUIState(word = "", guesses = emptyList(), tries = emptyList())
-    }
-}
+    val gameStatus: LifecycleState = LifecycleState.NotStarted,
+    val outcome: GameOutcome = GameOutcome.Ongoing,
+    val tries: List<Char> = emptyList()
+) : RoundUIState<Hangman>

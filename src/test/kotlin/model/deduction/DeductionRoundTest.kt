@@ -104,7 +104,7 @@ class DeductionRoundTest {
         assertEquals(3, guess.misplaced)
         assertEquals(2, guess.incorrect)
         assertEquals(
-            guess.status,
+            guess.statuses,
             listOf(
                 DeductionRound.MatchStatus.Misplaced,
                 DeductionRound.MatchStatus.Incorrect,
@@ -124,7 +124,7 @@ class DeductionRoundTest {
         assertEquals(0, guess.misplaced)
         assertEquals(3, guess.incorrect)
         assertEquals(
-            guess.status,
+            guess.statuses,
             listOf(
                 DeductionRound.MatchStatus.Correct,
                 DeductionRound.MatchStatus.Correct,

@@ -11,8 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import model.GameOutcome
+import model.LifecycleState
 import model.hangman.HangmanEvent
-import model.hangman.HangmanState
 import ui.util.ItemizedWord
 import ui.util.WordInputBox
 import vm.HangmanRoundUIState
@@ -30,24 +31,21 @@ fun HangmanHomeUI(
     val takeAction: (HangmanEvent) -> Unit = {
         hangmanViewModel.handleEvent(event = it)
     }
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+
         when (roundUIState.gameStatus) {
-            HangmanState.Won -> {
-                Text(text = listOf("ተዓወት!", "ቅኑዕ መልሲ!").random(), style = style)
-                Text(text = roundUIState.word, style = style)
+            LifecycleState.NotStarted -> {
+                Button(onClick = { takeAction(HangmanEvent.Start) }) {
+                    Text(text = "Start")
+                }
             }
-
-            HangmanState.Lost -> {
-                Text(text = listOf("ክላእ", "ክላሌዓለም", "ኣሕ!").random(), style = style)
-                Text(text = roundUIState.word, style = style)
-            }
-
-            HangmanState.Playing -> {
+            LifecycleState.Started -> {
                 HangmanPane(
                     rouUIState = roundUIState,
                     takeAction = takeAction,
@@ -55,18 +53,26 @@ fun HangmanHomeUI(
                 )
             }
 
+            LifecycleState.Ended -> {
+                val gameOutcome = roundUIState.outcome
+                if (gameOutcome == GameOutcome.Won) {
+                    Text(text = listOf("ተዓወት!", "ቅኑዕ መልሲ!").random(), style = style)
+                    Text(text = roundUIState.word, style = style)
+                } else if (gameOutcome == GameOutcome.Lost) {
+                    Text(text = listOf("ክላእ", "ክላሌዓለም", "ኣሕ!").random(), style = style)
+                    Text(text = roundUIState.word, style = style)
+                }
+            }
+
             else -> {}
         }
+    }
 
-        Button(onClick = { takeAction(HangmanEvent.Start) }) {
-            Text(text = "Start")
-        }
-
-        Button(onClick = { navigate(Screen.Home) }) {
-            Text(text = "Back to Home")
-        }
+    Button(onClick = { navigate(Screen.Home) }) {
+        Text(text = "Back to Home")
     }
 }
+
 
 @Composable
 fun HangmanPane(rouUIState: HangmanRoundUIState, takeAction: (HangmanEvent) -> Unit, modifier: Modifier = Modifier) {

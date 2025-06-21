@@ -1,5 +1,6 @@
 package model.deduction
 
+import model.LifecycleState
 import model.Session
 
 class DeductionSession(
@@ -10,12 +11,11 @@ class DeductionSession(
 
     fun startNewRound() {
         round = DeductionRound(config = config, word = words.random())
-
     }
 
     fun guess(guess: String) {
         round?.guess(guess)
-        if (round?.gameStatus != DeductionState.Playing) {
+        if (round?.state != LifecycleState.Started) {
             startNewRound()
         }
     }

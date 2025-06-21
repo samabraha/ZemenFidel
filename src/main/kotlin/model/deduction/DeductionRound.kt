@@ -1,5 +1,7 @@
 package model.deduction
 
+import model.GameOutcome
+import model.LifecycleState
 import model.Round
 import util.GeezUtil.isSiblingsWith
 import vm.DeductionRoundUIState
@@ -7,13 +9,14 @@ import vm.DeductionRoundUIState
 class DeductionRound(
     config: DeductionConfig = DeductionConfig(),
     val word: String
-) :
-    Round<Deduction>(config = config) {
-    var gameStatus: DeductionState = DeductionState.Playing
+) : Round<Deduction>(config = config) {
+    var state: LifecycleState = LifecycleState.Started
+    var outcome: GameOutcome = GameOutcome.Ongoing
+
     var score: DeductionWordScore = DeductionWordScore(
         word = word,
         guess = "",
-        status = emptyList()
+        statuses = emptyList()
     )
     var attempts = 0
 
@@ -27,9 +30,16 @@ class DeductionRound(
         attempts++
         this.score = DeductionWordScore.fromGuess(word = word, guess = guess)
         if (this.score.correct == word.length) {
-            gameStatus = DeductionState.Won
+            state = LifecycleState.Ended
+            outcome = GameOutcome.Won
         }
     }
+
+    fun snapRUIState(roundUIState: DeductionRoundUIState) = score.snapRUIState(roundUIState).copy(
+        state = state,
+        outcome = outcome,
+        attempts = attempts
+    )
 
     enum class MatchStatus { Correct, Misplaced, Incorrect }
 
@@ -39,14 +49,16 @@ class DeductionRound(
         val correct: Int = 0,
         val misplaced: Int = 0,
         val incorrect: Int = 0,
-        val status: List<MatchStatus>
+        val statuses: List<MatchStatus>
     ) {
+
         fun snapRUIState(roundUIState: DeductionRoundUIState) = roundUIState.copy(
             word = word,
             guess = guess,
             correct = correct,
             misplaced = misplaced,
-            incorrect = incorrect
+            incorrect = incorrect,
+            statuses = statuses,
         )
 
         companion object {
@@ -64,7 +76,7 @@ class DeductionRound(
                         correct = word.length,
                         misplaced = 0,
                         incorrect = 0,
-                        status = List(word.length) { MatchStatus.Correct })
+                        statuses = List(word.length) { MatchStatus.Correct })
                 }
 
                 var (statusList, usedInWord) = createLists(guess = guess, word = word)
@@ -76,7 +88,7 @@ class DeductionRound(
                         correct = 0,
                         misplaced = 0,
                         incorrect = word.length,
-                        status = statusList
+                        statuses = statusList
                     )
                 }
 
@@ -106,7 +118,7 @@ class DeductionRound(
                     correct = correct,
                     misplaced = misplaced,
                     incorrect = incorrect,
-                    status = statusList
+                    statuses = statusList
                 )
             }
 

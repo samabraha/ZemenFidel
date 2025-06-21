@@ -1,12 +1,15 @@
 package model.hangman
 
+import model.GameOutcome
+import model.LifecycleState
 import model.Round
 import util.GeezUtil.isSiblingsWith
 import util.Log
 import vm.HangmanRoundUIState
 
 class HangmanRound(config: HangmanConfig, val word: String) : Round<Hangman>(config = config) {
-    var gameState: HangmanState = HangmanState.Playing
+    var gameState: LifecycleState = LifecycleState.Started
+    var outcome: GameOutcome = GameOutcome.Ongoing
     val guessLetters = MutableList(word.length) { ' ' }
     var lives = word.length * 3
     val incorrectLetters = MutableList(lives) { ' ' }
@@ -24,17 +27,25 @@ class HangmanRound(config: HangmanConfig, val word: String) : Round<Hangman>(con
             incorrectLetters[incorrectLetters.size - lives--] = guess
         }
 
-        if (guessLetters.none { it == ' ' }) gameState = HangmanState.Won
-        if (lives == 0) gameState = HangmanState.Lost
+        if (guessLetters.none { it == ' ' }) {
+            gameState = LifecycleState.Ended
+            outcome = GameOutcome.Won
+        }
+        if (lives == 0) {
+            gameState = LifecycleState.Ended
+            outcome = GameOutcome.Lost
+        }
 
         Log.info("guess()") { "guess: '$guess', gl: $guessLetters" }
     }
+
 
     fun snapRUIState(currentState: HangmanRoundUIState): HangmanRoundUIState {
         return currentState.copy(
             word = word,
             lives = lives,
             gameStatus = gameState,
+            outcome = outcome,
             guesses = guessLetters.toList(),
             tries = incorrectLetters.toList()
         )
