@@ -3,10 +3,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,14 +20,11 @@ import ui.jumble.JumbleHomeUI
 import ui.memo_challenger.MemoryChallengerHomeUI
 import ui.spelling_sprint.SpellingSprintHomeUI
 import ui.word_train.WordTrainHomeUI
-import util.GeezUtil
 import vm.HomeViewModel
 import vm.Screen
 
 
 fun main() = runBlocking {
-    GeezUtil.primaryLetters.also { println(it) }
-
     application {
         val windowState = rememberWindowState(
             placement = WindowPlacement.Floating, position = WindowPosition(alignment = Alignment.Center)
@@ -60,22 +57,40 @@ fun App(homeViewModel: HomeViewModel) {
                         HomeUI(homeViewModel, navigate = navigate, modifier = Modifier)
 
                     Screen.Hangman ->
-                        HangmanHomeUI(homeViewModel.hangmanVMProvider(), navigate = navigate)
+                        HangmanHomeUI(
+                            hangmanViewModel = homeViewModel.hangmanVMProvider(),
+                            navigate = navigate
+                        )
 
                     Screen.Jumble ->
-                        JumbleHomeUI(homeViewModel.jumbleVMProvider(), navigate = navigate)
+                        JumbleHomeUI(
+                            jumbleViewModel = homeViewModel.jumbleVMProvider(),
+                            navigate = navigate
+                        )
 
                     Screen.SpellingSprint ->
-                        SpellingSprintHomeUI(homeViewModel.spellingSprintVMProvider(), navigate = navigate)
+                        SpellingSprintHomeUI(
+                            sprintViewModel = homeViewModel.spellingSprintVMProvider(),
+                            navigate = navigate
+                        )
 
                     Screen.MemoryChallenger ->
-                        MemoryChallengerHomeUI(homeViewModel.memoryChallengerVMProvider(), navigate = navigate)
+                        MemoryChallengerHomeUI(
+                            memoryChallengerViewModel = homeViewModel.memoryChallengerVMProvider(),
+                            navigate = navigate
+                        )
 
                     Screen.Deduction ->
-                        DeductionHomeUI(homeViewModel.deductionVMProvider(), navigate = navigate)
+                        DeductionHomeUI(
+                            deductionViewModel = homeViewModel.deductionVMProvider(),
+                            navigate = navigate
+                        )
 
                     Screen.WordTrain ->
-                        WordTrainHomeUI(homeViewModel.wordTrainVMProvider(), navigate = navigate)
+                        WordTrainHomeUI(
+                            wordTrainViewModel = homeViewModel.wordTrainVMProvider(),
+                            navigate = navigate
+                        )
 
                 }
 

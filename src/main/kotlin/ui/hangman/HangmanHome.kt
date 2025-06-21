@@ -55,13 +55,12 @@ fun HangmanHomeUI(
                 )
             }
 
-            else -> {
-                Button(onClick = { takeAction(HangmanEvent.Start) }) {
-                    Text(text = "Start")
-                }
-            }
+            else -> {}
         }
 
+        Button(onClick = { takeAction(HangmanEvent.Start) }) {
+            Text(text = "Start")
+        }
 
         Button(onClick = { navigate(Screen.Home) }) {
             Text(text = "Back to Home")

@@ -25,7 +25,6 @@ class JumbleRound(val word: String, config: JumbleConfig = JumbleConfig()) : Rou
         guess = ""
     }
 
-
     fun snapRUIState() = JumbleRoundUIState(
         jumbledWord = jumbledWord,
         correctWord = word,
@@ -40,5 +39,4 @@ class JumbleRound(val word: String, config: JumbleConfig = JumbleConfig()) : Rou
         }
         return jumble
     }
-
 }

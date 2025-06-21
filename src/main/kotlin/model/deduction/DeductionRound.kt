@@ -1,6 +1,7 @@
 package model.deduction
 
 import model.Round
+import util.GeezUtil.isSiblingsWith
 import vm.DeductionRoundUIState
 
 class DeductionRound(
@@ -84,7 +85,9 @@ class DeductionRound(
 
                 for (i in guess.indices) {
                     if (statusList[i] != MatchStatus.Correct) {
-                        val index = word.indices.firstOrNull { !usedInWord[it] && word[it] == guess[i] }
+                        val index = word.indices.firstOrNull {
+                            !usedInWord[it] && word[it].isSiblingsWith(guess[i])
+                        }
 
                         if (index != null) {
                             statusList[i] = MatchStatus.Misplaced
@@ -120,7 +123,7 @@ class DeductionRound(
                         statusList[i] = MatchStatus.Incorrect
                     }
 
-                    if (guess[i] == word[i]) {
+                    if (guess[i] == word[i] || guess[i].isSiblingsWith(word[i])) {
                         statusList[i] = MatchStatus.Correct
                         usedInWord[i] = true
                     }

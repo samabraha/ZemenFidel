@@ -25,7 +25,7 @@ object GeezUtil {
         val base = code - ((code - 0x1200) % 8)
         var root = base.toChar()
         root = fidelGroupOverrides[root] ?: root
-        return root.takeIf { root in primaryLetters }.also { println("$this $it") }
+        return root.takeIf { root in primaryLetters }
     }
 
     fun Char.isSiblingsWith(second: Char): Boolean {
@@ -39,7 +39,12 @@ object GeezUtil {
         val rootCode = root.code
 
         return buildSet {
-            for (i in rootCode..rootCode + 6) add(i.toChar())
-        }.also { println(it) }
+            for (i in 0..7) {
+                val sib = (rootCode + i).toChar()
+                if (sib.isSiblingsWith(root)) {
+                    add(sib)
+                }
+            }
+        }
     }
 }

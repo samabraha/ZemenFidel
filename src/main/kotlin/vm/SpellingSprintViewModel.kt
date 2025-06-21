@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.*
 import model.spelling_sprint.*
 import util.Log
-import kotlin.time.Duration.Companion.seconds
 
 class SpellingSprintViewModel(override var session: SpellingSprintSession) :
     GameViewModel<SpellingSprint, SpellingSprintEvent, SpellingSprintRound, SpellingSprintSession> {
@@ -39,7 +38,7 @@ class SpellingSprintViewModel(override var session: SpellingSprintSession) :
             revealJob = scope.launch {
                 while (it.isShowing && it.gameStatus == SpellingSprintState.Playing) {
                     Log.info("ShowLetter") { "isShowing:${it.isShowing}, ${it.wordSnapshot}" }
-                    delay(session.config.viewTime.seconds)
+                    delay(session.config.viewTime)
                     session.revealLetter()
                     setRUIState()
                 }

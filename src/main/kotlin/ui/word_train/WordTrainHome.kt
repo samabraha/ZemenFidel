@@ -1,8 +1,8 @@
 package ui.word_train
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import model.word_train.WordTrainEvent
@@ -55,7 +55,8 @@ fun NoGameWordTrainPane(
 
 @Composable
 fun WordTrainPane(
-    wordTrainState: WordTrainRoundUIState, takeAction: (WordTrainEvent) -> Unit, modifier: Modifier = Modifier
+    wordTrainState: WordTrainRoundUIState,
+    takeAction: (WordTrainEvent) -> Unit, modifier: Modifier = Modifier
 ) {
     Column {
         Text(text = "Word Train Pane", modifier = modifier)
